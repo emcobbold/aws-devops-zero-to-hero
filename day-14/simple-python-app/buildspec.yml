@@ -1,24 +1,33 @@
 version: 0.2
 
-env: 
+env:
   parameter-store:
     docker_username: mydocker-username
     docker_password: mydocker-password
-    
+
 phases:
   install:
     runtime-versions:
       python: 3.11
+
   pre_build:
     commands:
-      - "pip install -r day-14/simple-python-app/requirements.txt"
+      - pip install -r day-14/simple-python-app/requirements.txt
+
   build:
     commands:
-     - cd day-14/simple-python-app
-     - echo "Building Docker Image"
-     - echo "$docker_password" | docker login -u "$docker_username" --password-stdin
-     - docker build -t "$docker_username/simple-python-flask-app:latest" .
-     - docker push "$docker_username/simple-python-flask-app:latest"
+      - cd day-14/simple-python-app
+      - echo "Building Docker Image"
+      - echo "$docker_password" | docker login -u "$docker_username" --password-stdin
+      - docker build -t "$docker_username/simple-python-flask-app:latest" .
+      - docker push "$docker_username/simple-python-flask-app:latest"
+
   post_build:
     commands:
       - echo "Build is Successful"
+
+artifacts:
+  base-directory: day-14/simple-python-app
+  files:
+    - appspec.yml
+    - scripts/**/*
