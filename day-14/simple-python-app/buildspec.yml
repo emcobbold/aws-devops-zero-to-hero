@@ -12,11 +12,15 @@ phases:
 
   pre_build:
     commands:
-      - pip install -r day-14/simple-python-app/requirements.txt
+      - echo "Entering app directory..."
+      - cd day-14/simple-python-app
+      - echo "Listing files to confirm paths..."
+      - ls -la
+      - echo "Installing dependencies..."
+      - pip install -r requirements.txt
 
   build:
     commands:
-      - cd day-14/simple-python-app
       - echo "Building Docker Image"
       - echo "$docker_password" | docker login -u "$docker_username" --password-stdin
       - docker build -t "$docker_username/simple-python-flask-app:latest" .
